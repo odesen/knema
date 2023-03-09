@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"io"
 	"log"
 	"net/http"
 )
@@ -13,12 +13,12 @@ func logging(f http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func foo(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, you've requested: %s\n", r.URL.Path)
+func index(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, "<html><body>Hello World!</body></html>")
 }
 
 func main() {
-	http.HandleFunc("/", logging(foo))
+	http.HandleFunc("/", logging(index))
 
 	http.ListenAndServe(":8000", nil)
 }
